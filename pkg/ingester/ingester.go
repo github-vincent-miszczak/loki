@@ -281,6 +281,7 @@ func (i *Ingester) setupAutoForget() {
 					for _, id := range removeList {
 						level.Info(util_log.Logger).Log("msg", fmt.Sprintf("forgeting ingester %v because it was not healthy after %v", id, i.cfg.LifecyclerConfig.RingConfig.HeartbeatTimeout))
 						ringDesc.RemoveIngester(id)
+						i.metrics.autoForgetUnhealthyIngestersTotal.Inc()
 					}
 					return ringDesc, true, nil
 				}
